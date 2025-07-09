@@ -1,10 +1,12 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+dotenv.config();
 
+const dburl = process.env.DBURL;
 export const connectDB = async () => {
   try {
-    await mongoose.connect('mongodb://localhost:27017/collaborative-todo', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+    await mongoose.connect(dburl, {
+   
     });
     console.log("MongoDB connected");
   } catch (err) {
