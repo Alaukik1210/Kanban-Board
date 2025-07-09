@@ -13,14 +13,20 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://kanban-board-lilac-seven.vercel.app/",
+    origin: [ 'https://kanban-board-lilac-seven.vercel.app',
+  'http://localhost:5173'],
     methods: ["GET", "POST"]
   }
 });
 
 global.io = io;
-
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://kanban-board-lilac-seven.vercel.app',
+    'http://localhost:5173'
+  ],
+  credentials: true,
+}));
 app.use(express.json());
 
 connectDB();
