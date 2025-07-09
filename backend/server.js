@@ -5,13 +5,15 @@ import { Server } from 'socket.io';
 import { connectDB } from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
 import taskRoutes from './routes/taskRoutes.js';
+import dotenv from 'dotenv'
+
 
 const app = express();
 const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://kanban-board-lilac-seven.vercel.app/",
     methods: ["GET", "POST"]
   }
 });

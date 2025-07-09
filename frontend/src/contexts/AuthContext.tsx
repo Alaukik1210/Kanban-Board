@@ -28,7 +28,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = async (email: string, password: string) => {
-    const response = await fetch('http://localhost:3001/api/login', {
+    const response = await fetch('https://disciplined-mercy.railway.app/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const register = async (username: string, email: string, password: string) => {
-    const response = await fetch('http://localhost:3001/api/register', {
+    const response = await fetch('https://disciplined-mercy.railway.app/api/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

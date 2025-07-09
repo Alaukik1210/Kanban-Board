@@ -21,7 +21,7 @@ const KanbanBoard: React.FC = () => {
   const [draggedTask, setDraggedTask] = useState<string | null>(null);
   
   const { user, token, logout } = useAuth();
-  const socket = useSocket('http://localhost:3001');
+  const socket = useSocket('https://disciplined-mercy.railway.app');
 
   useEffect(() => {
     if (socket) {
@@ -58,7 +58,7 @@ const KanbanBoard: React.FC = () => {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/tasks', {
+      const response = await fetch('https://disciplined-mercy.railway.app/api/tasks', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -72,7 +72,7 @@ const KanbanBoard: React.FC = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/users', {
+      const response = await fetch('https://disciplined-mercy.railway.app/api/users', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -86,7 +86,7 @@ const KanbanBoard: React.FC = () => {
 
   const fetchActions = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/actions', {
+      const response = await fetch('https://disciplined-mercy.railway.app/api/actions', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -113,8 +113,8 @@ const KanbanBoard: React.FC = () => {
   const handleSaveTask = async (taskData: Partial<Task>) => {
     try {
       const url = modalMode === 'create' 
-        ? 'http://localhost:3001/api/tasks'
-        : `http://localhost:3001/api/tasks/${taskData.id}`;
+        ? 'https://disciplined-mercy.railway.app/api/tasks'
+        : `https://disciplined-mercy.railway.app/api/tasks/${taskData.id}`;
       
       const method = modalMode === 'create' ? 'POST' : 'PUT';
       
@@ -152,7 +152,7 @@ const KanbanBoard: React.FC = () => {
     if (!confirm('Are you sure you want to delete this task?')) return;
 
     try {
-      const response = await fetch(`http://localhost:3001/api/tasks/${taskId}`, {
+      const response = await fetch(`https://disciplined-mercy.railway.app/api/tasks/${taskId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -171,7 +171,7 @@ const KanbanBoard: React.FC = () => {
 
   const handleSmartAssign = async (taskId: string) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/smart-assign/${taskId}`, {
+      const response = await fetch(`https://disciplined-mercy.railway.app/api/smart-assign/${taskId}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -190,7 +190,7 @@ const KanbanBoard: React.FC = () => {
 
   const handleConflictResolve = async (resolvedTask: Task) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/tasks/${resolvedTask.id}`, {
+      const response = await fetch(`https://disciplined-mercy.railway.app/api/tasks/${resolvedTask.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -232,7 +232,7 @@ const KanbanBoard: React.FC = () => {
     
     if (task && task.status !== status) {
       try {
-        const response = await fetch(`http://localhost:3001/api/tasks/${taskId}`, {
+        const response = await fetch(`https://disciplined-mercy.railway.app/api/tasks/${taskId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
