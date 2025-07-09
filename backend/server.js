@@ -12,10 +12,12 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-const allowedOrigins = [
-  'https://kanban-board-lilac-seven.vercel.app',
-  'http://localhost:5173'
-];
+const allowedOrigins = process.env.CORS_ORIGIN 
+  ? process.env.CORS_ORIGIN.split(',')
+  : [
+      'https://kanban-board-lilac-seven.vercel.app',
+      'http://localhost:5173'
+    ];
 
 // Enhanced CORS configuration
 const corsOptions = {
@@ -46,26 +48,31 @@ const io = new Server(server, {
 
 global.io = io;
 
-// Apply CORS middleware
-app.use(cors(corsOptions));
-
-// Additional manual CORS headers for Railway
+// Force CORS headers BEFORE any other middleware
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  console.log('Incoming request origin:', origin);
   
-  // Handle preflight requests
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-  } else {
-    next();
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
   }
+  
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,PATCH');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+  res.setHeader('Access-Control-Max-Age', '86400');
+  
+  // Handle preflight requests immediately
+  if (req.method === 'OPTIONS') {
+    console.log('Handling preflight request for:', req.url);
+    return res.status(200).end();
+  }
+  
+  next();
 });
+
+// Apply CORS middleware as backup
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
